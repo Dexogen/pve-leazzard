@@ -36,6 +36,6 @@ jobs:
           file: ./src/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ toLower(github.repository_owner) }}/pve-leazzard:latest
-            ghcr.io/${{ toLower(github.repository_owner) }}/pve-leazzard:${{ github.ref_name }}
+            ghcr.io/dexogen/pve-leazzard:latest
+            ghcr.io/dexogen/pve-leazzard:${{ github.ref_name }}
           platforms: linux/arm64,linux/amd64
