@@ -2,9 +2,15 @@ name: Build and Push Docker Image to GHCR
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - '*'
+      - "*"
   workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build:
@@ -29,13 +35,25 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Determine docker tags
+        id: docker_tags
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+            echo "tags=ghcr.io/${{ github.repository_owner }}/pve-leazzard:${VERSION},ghcr.io/${{ github.repository_owner }}/pve-leazzard:latest" >> $GITHUB_OUTPUT
+          else
+            SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+            echo "tags=ghcr.io/${{ github.repository_owner }}/pve-leazzard:sha-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ./src
           file: ./src/Dockerfile
+          platforms: linux/amd64, linux/arm64
           push: true
-          tags: |
-            ghcr.io/dexogen/pve-leazzard:latest
-            ghcr.io/dexogen/pve-leazzard:${{ github.ref_name }}
-          platforms: linux/arm64,linux/amd64
+          tags: ${{ steps.docker_tags.outputs.tags }}
+          labels: |
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
