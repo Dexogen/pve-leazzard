@@ -36,7 +36,7 @@ docker-hub:
     - when: never
   script:
     - cd src/
-    - docker login -u "$DOCKER_USER" -p "$DOCKER_TOKEN"
+    - docker login -u "$DOCKER_USER" -p "$DOCKER_TOKEN" "$DOCKER_IO_REGISTRY"
     - docker context create builder-context
     - docker buildx create --name builderx --driver docker-container --use builder-context
     - docker buildx build \
