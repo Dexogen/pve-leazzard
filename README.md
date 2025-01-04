@@ -176,6 +176,22 @@ You can also set up security rules and restrict access to and from this network,
 2. Integrate a simple Prometheus exporter to provide a list of static and dynamic domains.
 
 
+## Pre-built images
+
+### [GitHub Container Registry](https://github.com/dexogen/pve-leazzard/pkgs/container/pve-leazzard)
+
+```bash
+docker pull ghcr.io/dexogen/pve-leazzard:latest
+```
+
+
+### [Docker Hub](https://hub.docker.com/r/dexogen/pve-leazzard)
+
+```bash
+docker pull dexogen/pve-leazzard:latest
+```
+
+
 ## Links
 
 - https://pve.proxmox.com/pve-docs/api-viewer/index.html
