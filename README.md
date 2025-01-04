@@ -21,6 +21,9 @@ A DNS/DHCP server based on [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html)
 - [Variables](#variables)
 - [Demo ](#demo)
 - [Roadmap](#roadmap)
+- [Pre-built images](#pre-built-images)
+   * [GitHub Container Registry](#github-container-registry)
+   * [Docker Hub](#docker-hub)
 - [Links](#links)
 
 
@@ -180,12 +183,16 @@ You can also set up security rules and restrict access to and from this network,
 
 ### [GitHub Container Registry](https://github.com/dexogen/pve-leazzard/pkgs/container/pve-leazzard)
 
+Works on GitHub Actions.
+
 ```bash
 docker pull ghcr.io/dexogen/pve-leazzard:latest
 ```
 
 
 ### [Docker Hub](https://hub.docker.com/r/dexogen/pve-leazzard)
+
+Works on my home GitLab.
 
 ```bash
 docker pull dexogen/pve-leazzard:latest
