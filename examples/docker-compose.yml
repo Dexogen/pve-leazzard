@@ -1,0 +1,22 @@
+services:
+  pve-leazzard:
+    image: dexogen/pve-leazzard:latest
+    environment:
+      PROXMOX_HOST: "https://your-proxmox-host:port"
+      API_TOKEN_ID: "root@pam!dns-leazzard"
+      API_TOKEN_SECRET: "set-your-secret"
+      VERIFY_SSL: "true"
+      NETWORK_CIDR: "10.0.0.0/23"
+      DHCP_RANGE: "10.0.1.1,10.0.1.254,255.255.254.0,12h"
+      DHCP_OPTION: "option:router,10.0.0.1"
+      DNS_DOMAIN: "lab"
+      SYNC_INTERVAL: "300"
+      ARP_CHECK_INTERVAL: "5"
+      LOG_LEVEL: "ERROR"
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+    restart: always
+    volumes:
+      - ./dnsmasq:/etc/dnsmasq.d
+      - ./leases:/var/lib/misc

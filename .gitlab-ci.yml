@@ -1,0 +1,30 @@
+stages:
+  - build
+
+nexus:
+  stage: build
+  image: data61/magda-builder-docker:latest
+  when: manual
+  services:
+    - docker:dind
+  script:
+    - cd src/
+    - docker login -u $NEXUS_USER -p $NEXUS_PASS $NEXUS_REGISTRY
+    - docker context create builder-context
+    - docker buildx create --name builderx --driver docker-container --use builder-context
+    - docker buildx build -t $NEXUS_REGISTRY/$CI_PROJECT_PATH:latest -f Dockerfile --push --platform=linux/arm64,linux/amd64 .
+
+docker-hub:
+  stage: build
+  image: data61/magda-builder-docker:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+  services:
+    - docker:dind
+  script:
+    - cd src/
+    - docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+    - docker context create builder-context
+    - docker buildx create --name builderx --driver docker-container --use builder-context
+    - docker buildx build -t $CI_PROJECT_PATH:latest -t $CI_PROJECT_PATH:$CI_COMMIT_TAG -f Dockerfile --push --platform=linux/arm64,linux/amd64 .
